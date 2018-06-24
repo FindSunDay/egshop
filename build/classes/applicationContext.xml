@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+	     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+	     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="/WEB-INF/classes/jdbc.properties" />
+	</bean>
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass">
+			<value>${driverClass}</value>
+		</property>
+		<property name="jdbcUrl">
+			<value>${jdbcUrl}</value>
+		</property>
+		<property name="user">
+			<value>${user}</value>
+		</property>
+		<property name="password">
+			<value>${password}</value>
+		</property>
+		<property name="minPoolSize">
+			<value>${c3p0.minPoolSize}</value>
+		</property>
+		<property name="maxPoolSize">
+			<value>${c3p0.maxPoolSize}</value>
+		</property>
+		<property name="initialPoolSize">
+			<value>${c3p0.initialPoolSize}</value>
+		</property>
+		<property name="maxIdleTime">
+			<value>60</value>
+		</property>
+		<property name="acquireIncrement">
+			<value>5</value>
+		</property>
+
+		<property name="maxStatements">
+			<value>0</value>
+		</property>
+
+		<property name="idleConnectionTestPeriod">
+			<value>60</value>
+		</property>
+
+		<property name="acquireRetryAttempts">
+			<value>30</value>
+		</property>
+
+		<property name="acquireRetryDelay">
+			<value>10000</value>
+		</property>
+
+		<property name="breakAfterAcquireFailure">
+			<value>false</value>
+		</property>
+
+		<property name="testConnectionOnCheckout">
+			<value>false</value>
+		</property>
+	</bean>
+
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<!-- 配置sessionFactory -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+				<prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+				<prop key="hibernate.cache.provider_class">${hibernate.cache}</prop>
+			</props>
+		</property>
+		<property name="mappingDirectoryLocations">
+			<list>
+				<value>/WEB-INF/classes/com/trade/pojo</value>
+			</list>
+		</property>
+	</bean>
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<!-- 配置事务的传播特性 -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="del*" propagation="REQUIRED" />
+			<tx:method name="*" propagation="SUPPORTS" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+	<!-- 配置那些类的那些方法进行事务管理 -->
+	<aop:config>
+		<aop:pointcut id="allManagerMethod" expression="execution(* com.trade.service.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="allManagerMethod" />
+	</aop:config>
+
+	<bean id="baseDao" class="com.trade.dao.imp.BaseDaoImp">
+		<property name="hibernateTemplate" ref="hibernateTemplate"></property>
+	</bean>
+	<bean id="roleService" class="com.trade.service.RoleService">
+		<property name="baseDao" ref="baseDao"></property>
+	</bean>
+	<bean id="userService" class="com.trade.service.UserService">
+		<property name="baseDao" ref="baseDao"></property>
+	</bean>
+	<bean id="productService" class="com.trade.service.ProductService">
+		<property name="baseDao" ref="baseDao"></property>
+	</bean>
+	<bean id="orderService" class="com.trade.service.OrderService">
+		<property name="baseDao" ref="baseDao"></property>
+	</bean>
+	<bean id="collectService" class="com.trade.service.CollectService">
+		<property name="baseDao" ref="baseDao"></property>
+	</bean>
+	<bean id="messageService" class="com.trade.service.MessageService">
+		<property name="baseDao" ref="baseDao"></property>
+	</bean>
+	<bean id="newsService" class="com.trade.service.NewsService">
+		<property name="baseDao" ref="baseDao"></property>
+	</bean>
+	<bean id="gyservice" class="com.trade.service.GYSService">
+		<property name="baseDao" ref="baseDao"></property>
+	</bean>
+	<bean id="ggService" class="com.trade.service.GgService">
+		<property name="baseDao" ref="baseDao"></property>
+	</bean>
+	<bean id="reviewsService" class="com.trade.service.ReviewsService">
+		<property name="baseDao" ref="baseDao"></property>
+	</bean>
+
+</beans>

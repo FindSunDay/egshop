@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Newline Examples</title>
+		<style>
+			form {
+				margin: 0;
+			}
+			textarea {
+				display: block;
+			}
+		</style>
+		<script charset="utf-8" src="../kindeditor-min.js"></script>
+		<script charset="utf-8" src="../lang/zh_CN.js"></script>
+		<script>
+			var editor;
+			KindEditor.ready(function(K) {
+			
+				K('input[name=newlineTag]').change(function() {
+					if (editor) {
+						editor.remove();
+						editor = null;
+					}
+					editor = K.create('textarea[name="content"]', {
+						newlineTag : this.value,
+						resizeType : 0,
+						allowPreviewEmoticons : false,
+					allowImageUpload : false,
+
+						items : [
+						 'emoticons','link']
+
+					});
+				});
+				K('input[name=newlineTag]').change();
+			});
+		</script>
+	</head>
+	<body>
+		<h3>回车换行设置</h3>
+		<form>
+			<p>
+			<input type="hidden" name="newlineTag" value="br">
+			</p>
+			<textarea name="content" style="width:500px;height:100px;"></textarea>
+		</form>
+	</body>
+</html>

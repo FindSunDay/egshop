@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+<struts>
+	<constant name="struts.devMode" value="true"></constant>
+	<constant name="struts.action.extension" value="action"></constant>
+	<package name="default" extends="struts-default" namespace="/">
+		<interceptors>
+			<interceptor name="authority"
+				class="com.trade.interceptor.SessionInterceptor">
+			</interceptor>
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="authority" />
+			</interceptor-stack>
+		</interceptors>
+		<!-- 定义默认拦截器 -->
+		<default-interceptor-ref name="mydefault" />
+		<global-results>
+			<result name="login">/loginOut.jsp</result>
+		</global-results>
+	</package>
+	<package name="login" extends="struts-default" namespace="/">
+		<action name="login" class="com.trade.action.LoginAction"
+			method="login">
+			<result name="success" type="redirect">/back.jsp</result>
+			<result name="input">/login.jsp</result>
+		</action>
+		<action name="loginOut" class="com.trade.action.LoginAction"
+			method="loginOut">
+			<result>/loginOut.jsp</result>
+		</action>
+		<action name="yzAccount" class="com.trade.action.LoginAction"
+			method="yzAccount">
+		</action>
+		<action name="registerUser" class="com.trade.action.LoginAction"
+			method="registerUser">
+		</action>
+	</package>
+
+	<package name="gys" extends="default" namespace="/">
+		<action name="saveJGys" class="com.trade.action.GYSAction"
+			method="saveJGys">
+		</action>
+		<action name="updateJGys" class="com.trade.action.GYSAction"
+			method="updateJGys">
+		</action>
+		<action name="getJGysObj" class="com.trade.action.GYSAction"
+			method="getJGysObj">
+			<result>/jsp/gys/gys_update.jsp</result>
+		</action>
+		<action name="getGyss" class="com.trade.action.GYSAction"
+			method="getGyss">
+			<result>/jsp/gys/gys_info.jsp</result>
+		</action>
+		<action name="getGYS" class="com.trade.action.GYSAction"
+			method="getGYS">
+			<result>/jsp/gys/gys_list.jsp</result>
+		</action>
+		<action name="deleteJGys" class="com.trade.action.GYSAction"
+			method="deleteJGys">
+		</action>
+	</package>
+	<package name="front" extends="struts-default" namespace="/">
+		<action name="getNewsTop" class="com.trade.action.IndexAction"
+			method="getNewsTop">
+		</action>
+		<action name="getGGList" class="com.trade.action.IndexAction"
+			method="getGGList">
+		</action>
+		<action name="getSellProductsTop" class="com.trade.action.IndexAction"
+			method="getSellProductsTop">
+		</action>
+		<action name="getNewProductTop" class="com.trade.action.IndexAction"
+			method="getNewProductTop">
+		</action>
+		<action name="productListByType" class="com.trade.action.IndexAction"
+			method="productListByType">
+		</action>
+		<action name="productListByFront" class="com.trade.action.ProductAction"
+			method="productListByFront">
+			<result>/jsp/front/product_list.jsp</result>
+		</action>
+		<action name="shopCar" class="com.trade.action.ShopCarAction"
+			method="shopcar">
+			<result>/jsp/front/cart.jsp</result>
+		</action>
+		<action name="getMenuParent" class="com.trade.action.ProductAction"
+			method="getMenuParent">
+		</action>
+		<action name="addProductCar" class="com.trade.action.ShopCarAction"
+			method="addProductCar">
+			<result type="redirectAction">shopCar</result>
+		</action>
+		<action name="modifyProduct" class="com.trade.action.ShopCarAction"
+			method="modifyProduct">
+			<result type="redirectAction">shopCar</result>
+		</action>
+		<action name="removeProduct" class="com.trade.action.ShopCarAction"
+			method="removeProduct">
+			<result type="redirectAction">shopCar</result>
+		</action>
+		<action name="clearProduct" class="com.trade.action.ShopCarAction"
+			method="clearProduct">
+			<result type="redirectAction">shopCar</result>
+		</action>
+		<action name="productLook" class="com.trade.action.ProductAction"
+			method="productLook">
+			<result>/jsp/front/product_look.jsp</result>
+		</action>
+		<action name="getNewsLook" class="com.trade.action.NewsAction"
+			method="getNewsLook">
+			<result>/jsp/front/news_look.jsp</result>
+		</action>
+	</package>
+	<package name="back" extends="default" namespace="/">
+		<action name="*_*">
+			<result>/jsp/{1}/{1}_{2}.jsp</result>
+		</action>
+		<action name="upload" class="com.trade.action.UploadAction"
+			method="upload">
+		</action>
+		<action name="userInfoInit" class="com.trade.action.LoginAction"
+			method="userInfoInit">
+			<result>/jsp/front/person_update.jsp</result>
+		</action>
+		<action name="updatePerson" class="com.trade.action.LoginAction"
+			method="updatePerson">
+		</action>
+	</package>
+	<package name="role" extends="default" namespace="/">
+		<action name="getRoleManage" class="com.trade.action.RoleAction"
+			method="getRoleManage">
+			<result>/jsp/role/role_info.jsp</result>
+		</action>
+		<action name="getMenuByRole" class="com.trade.action.RoleAction"
+			method="getMenuByRole">
+		</action>
+		<action name="addRole" class="com.trade.action.RoleAction"
+			method="addRole">
+		</action>
+		<action name="getRoleObj" class="com.trade.action.RoleAction"
+			method="getRoleObj">
+			<result>/jsp/role/role_update.jsp</result>
+		</action>
+		<action name="updateRole" class="com.trade.action.RoleAction"
+			method="updateRole">
+		</action>
+		<action name="deleteRole" class="com.trade.action.RoleAction"
+			method="deleteRole">
+		</action>
+		<action name="selectRoleMenu" class="com.trade.action.RoleAction"
+			method="selectRoleMenu">
+		</action>
+		<action name="initRoleMenu" class="com.trade.action.RoleAction"
+			method="initRoleMenu">
+			<result>/jsp/role/role_menu.jsp</result>
+		</action>
+		<action name="addRoleMenu" class="com.trade.action.RoleAction"
+			method="addRoleMenu">
+		</action>
+		<action name="updateBatchRole" class="com.trade.action.RoleAction"
+			method="updateBatchRole">
+		</action>
+	</package>
+	<package name="user" extends="default" namespace="/">
+		<action name="initUser" class="com.trade.action.UserAction"
+			method="initUser">
+			<result>/jsp/user/user_add.jsp</result>
+		</action>
+		<action name="addUser" class="com.trade.action.UserAction"
+			method="addUser">
+		</action>
+		<action name="getUserObj" class="com.trade.action.UserAction"
+			method="getUserObj">
+			<result>/jsp/user/user_update.jsp</result>
+		</action>
+		<action name="updateUser" class="com.trade.action.UserAction"
+			method="updateUser">
+		</action>
+		<action name="getUserManage" class="com.trade.action.UserAction"
+			method="getUserManage">
+			<result>/jsp/user/user_info.jsp</result>
+		</action>
+		<action name="deleteUser" class="com.trade.action.UserAction"
+			method="deleteUser">
+		</action>
+		<action name="valiadeAccount" class="com.trade.action.UserAction"
+			method="valiadeAccount"></action>
+		<action name="updateMyMoney" class="com.trade.action.LoginAction"
+			method="updateMyMoney">
+		</action>
+		<action name="advanceMyMoney" class="com.trade.action.LoginAction"
+			method="advanceMyMoney">
+		</action>
+	</package>
+	<package name="product" extends="default" namespace="/">
+		<action name="getProTypeManage" class="com.trade.action.ProductAction"
+			method="getProTypeManage">
+			<result>/jsp/type/type_info.jsp</result>
+		</action>
+		<action name="addProType" class="com.trade.action.ProductAction"
+			method="addProType">
+		</action>
+		<action name="getProTypeObj" class="com.trade.action.ProductAction"
+			method="getProTypeObj">
+			<result>/jsp/type/type_update.jsp</result>
+		</action>
+		<action name="updateProType" class="com.trade.action.ProductAction"
+			method="updateProType">
+		</action>
+		<action name="deleteProType" class="com.trade.action.ProductAction"
+			method="deleteProType">
+		</action>
+		<action name="initProduct" class="com.trade.action.ProductAction"
+			method="initProduct">
+			<result>/jsp/product/product_add.jsp</result>
+		</action>
+		<action name="getProductManage" class="com.trade.action.ProductAction"
+			method="getProductManage">
+			<result>/jsp/product/product_info.jsp</result>
+		</action>
+		<action name="addProduct" class="com.trade.action.ProductAction"
+			method="addProduct">
+		</action>
+		<action name="getProductObj" class="com.trade.action.ProductAction"
+			method="getProductObj">
+			<result>/jsp/product/product_update.jsp</result>
+		</action>
+		<action name="updateProduct" class="com.trade.action.ProductAction"
+			method="updateProduct">
+		</action>
+		<action name="deleteProduct" class="com.trade.action.ProductAction"
+			method="deleteProduct">
+		</action>
+		<action name="hotProduct" class="com.trade.action.ProductAction"
+			method="hotProduct">
+		</action>
+		<action name="initGg" class="com.trade.action.ProductAction"
+			method="initGg">
+			<result>/jsp/product/gg_add.jsp</result>
+		</action>
+		<action name="saveGg" class="com.trade.action.ProductAction"
+			method="saveGg"></action>
+		<action name="getGgsList" class="com.trade.action.ProductAction"
+			method="getGgsList">
+			<result>/jsp/product/gg_info.jsp</result>
+		</action>
+		<action name="getGgObj" class="com.trade.action.ProductAction"
+			method="getGgObj">
+			<result>/jsp/product/gg_update.jsp</result>
+		</action>
+		<action name="updateGg" class="com.trade.action.ProductAction"
+			method="updateGg"></action>
+		<action name="deleteGg" class="com.trade.action.ProductAction"
+			method="deleteGg"></action>
+	</package>
+	<package name="order" extends="default" namespace="/">
+		<action name="carOrder" class="com.trade.action.OrderAction"
+			method="carOrder">
+			<result>/jsp/front/order.jsp</result>
+		</action>
+		<action name="saveReceiver" class="com.trade.action.OrderAction"
+			method="saveReceiver">
+			<result type="redirectAction">carOrder</result>
+		</action>
+		<action name="orderSuccess" class="com.trade.action.OrderAction"
+			method="orderSuccess">
+			<result>/jsp/front/order_success.jsp</result>
+		</action>
+		<action name="saveOrder" class="com.trade.action.OrderAction"
+			method="saveOrder">
+			<result type="redirect">orderSuccess.action?orderPost=${orderPost}&amp;totalPrice=${totalPrice}
+			</result>
+		</action>
+		<action name="myOrderList" class="com.trade.action.OrderAction"
+			method="myOrderList">
+			<result>/jsp/front/order_list.jsp</result>
+		</action>
+		<action name="getOrderManage" class="com.trade.action.OrderAction"
+			method="getOrderManage">
+			<result>/jsp/order/order_info.jsp</result>
+		</action>
+		<action name="updateOrder" class="com.trade.action.OrderAction"
+			method="updateOrder">
+		</action>
+		<action name="productReview" class="com.trade.action.OrderAction"
+			method="productReview">
+			<result>/jsp/front/product_review.jsp</result>
+		</action>
+		<action name="saveReviews" class="com.trade.action.OrderAction"
+			method="saveReviews">
+		</action>
+		<action name="ordeZhif" class="com.trade.action.OrderAction"
+			method="ordeZhif">
+			<result type="redirect">orderInfoStatu.action?result=success&amp;totalPrice=${totalPrice}&amp;orderPost=${orderPost}
+			</result>
+			<result name="error" type="redirect">orderInfoStatu.action?result=error&amp;totalPrice=${totalPrice}
+			</result>
+		</action>
+		<action name="orderInfoStatu" class="com.trade.action.OrderAction"
+			method="orderInfoStatu">
+			<result>/jsp/front/order_success1.jsp</result>
+			<result name="error">/jsp/front/order_error.jsp</result>
+		</action>
+		<action name="getOrderTotalMange" class="com.trade.action.OrderAction"
+			method="getOrderTotalMange">
+			<result>/jsp/order/order_count.jsp</result>
+		</action>
+		<action name="deleteOrder" class="com.trade.action.OrderAction"
+			method="deleteOrder">
+		</action>
+		<action name="orderJhInit" class="com.trade.action.OrderAction"
+			method="orderJhInit">
+			<result>/jsp/front/order_wl.jsp</result>
+		</action>
+		<action name="updateOrderJh" class="com.trade.action.OrderAction"
+			method="updateOrderJh">
+		</action>
+		<action name="orderSh" class="com.trade.action.OrderAction"
+			method="orderSh">
+			<result>/jsp/order/order_refund.jsp</result>
+		</action>
+		<action name="orderShSure" class="com.trade.action.OrderAction"
+			method="orderShSure">
+		</action>
+	</package>
+	<package name="collect" extends="default" namespace="/">
+		<action name="saveCollect" class="com.trade.action.CollectAction"
+			method="saveCollect">
+			<result>/jsp/front/collect_success.jsp</result>
+		</action>
+		<action name="myCollectList" class="com.trade.action.CollectAction"
+			method="myCollectList">
+			<result>/jsp/front/collect_list.jsp</result>
+		</action>
+		<action name="deleteCollect" class="com.trade.action.CollectAction"
+			method="deleteCollect">
+		</action>
+	</package>
+	<package name="message" extends="default" namespace="/">
+		<action name="message_init" class="com.trade.action.MessageAction"
+			method="message_init">
+			<result>/jsp/message/message_add.jsp</result>
+		</action>
+		<action name="getMessageManage" class="com.trade.action.MessageAction"
+			method="getMessageManage">
+			<result>/jsp/message/message_info.jsp</result>
+		</action>
+		<action name="addMessage" class="com.trade.action.MessageAction"
+			method="addMessage">
+		</action>
+		<action name="getMessageObj" class="com.trade.action.MessageAction"
+			method="getMessageObj">
+			<result>/jsp/message/message_look.jsp</result>
+		</action>
+		<action name="deleteMessage" class="com.trade.action.MessageAction"
+			method="deleteMessage">
+		</action>
+		<action name="countReadMessage" class="com.trade.action.MessageAction"
+			method="countReadMessage">
+		</action>
+	</package>
+	<package name="reviews" extends="default" namespace="/">
+		<action name="getReviewsManage" class="com.trade.action.ReviewsAction"
+			method="getReviewsManage">
+			<result>/jsp/reviews/reviews_info.jsp</result>
+		</action>
+		<action name="getReviewsObj" class="com.trade.action.ReviewsAction"
+			method="getReviewsObj">
+			<result>/jsp/reviews/reviews_look.jsp</result>
+		</action>
+		<action name="deleteReviews" class="com.trade.action.ReviewsAction"
+			method="deleteReviews">
+		</action>
+	</package>
+	<package name="news" extends="default" namespace="/">
+		<action name="getNewsManage" class="com.trade.action.NewsAction"
+			method="getNewsManage">
+			<result>/jsp/news/news_info.jsp</result>
+		</action>
+		<action name="addNews" class="com.trade.action.NewsAction"
+			method="addNews">
+		</action>
+		<action name="getNewsObj" class="com.trade.action.NewsAction"
+			method="getNewsObj">
+			<result>/jsp/news/news_update.jsp</result>
+		</action>
+		<action name="updateNews" class="com.trade.action.NewsAction"
+			method="updateNews">
+		</action>
+		<action name="deleteNews" class="com.trade.action.NewsAction"
+			method="deleteNews">
+		</action>
+	</package>
+</struts>
+
